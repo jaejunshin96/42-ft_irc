@@ -1,19 +1,19 @@
-NAME	= ircserv
+NAME	= client
 
 CC		= c++
 CFLAGS	= -Wall -Wextra -Werror -std=c++98
 
-SRCS	= main.cpp
+SRCS	= client.cpp
 
 $(NAME):
 	@$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
-	@echo "ircserv has been created."
+	@echo "client has been created."
 
 all: $(NAME)
 
 clean:
 	@rm -f $(NAME)
-	@echo "ircserv has been deleted."
+	@echo "client has been deleted."
 
 fclean: clean
 
