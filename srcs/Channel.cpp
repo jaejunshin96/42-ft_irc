@@ -1,20 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/26 19:35:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/02/26 19:47:34 by jaeshin          ###   ########.fr       */
+/*   Created: 2024/02/26 19:38:03 by jaeshin           #+#    #+#             */
+/*   Updated: 2024/02/26 19:44:56 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/Server.hpp"
+#include "../include/Channel.hpp"
 
-int main() {
-	Server server = Server();
+Channel::Channel() {};
 
-	server.createServer(4242);
-	return 0;
-}
+Channel::Channel(string name): _name(name) {};
+
+Channel::~Channel() {};
+
+string Channel::getName() const {
+	return _name;
+};
+
+vector<Client> Channel::getClients() const {
+	return _clients;
+};
+
+void Channel::setName(string newName) {
+	_name = newName;
+};
+
