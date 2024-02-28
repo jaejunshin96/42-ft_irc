@@ -6,18 +6,22 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 17:54:57 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/02/26 19:26:46 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/02/28 19:24:15 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
 #include <iostream>
-#include <vector>
 #include <unistd.h>
 #include <cstring>
 
+#include <algorithm>
+#include <vector>
+#include <map>
+
 #include <sys/socket.h>
+#include <sys/poll.h>
 #include <netinet/in.h>
 #include <arpa/inet.h> // For inet_addr()
 
@@ -29,9 +33,15 @@ using namespace std;
 class Channel;
 class Client;
 
+typedef vector<pollfd>::iterator pfd_iterator;
+
 class Server {
 	private:
-		vector<Client> _clients;
+		int _listening;
+		int _serverFd;
+
+		vector<pollfd> _pfds;
+		map<int, Client *> _clients;
 		vector<Channel> _channels;
 
 	public:
@@ -47,4 +57,10 @@ class Server {
 		void rmChannel(Channel channel);
 
 		int createServer(int port);
+
+		void start(void);
+
+		void disconnectClient(int fd);
+		void connectClient(void);
+		void message(int fd);
 };

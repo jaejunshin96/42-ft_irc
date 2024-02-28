@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:35:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/02/26 19:47:34 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/02/27 14:37:02 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,5 @@
 
 int main() {
 	Server server = Server();
-
-	server.createServer(4242);
 	return 0;
 }

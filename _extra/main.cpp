@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 19:04:11 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/02/26 19:34:24 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/02/28 18:29:38 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ int main() {
 		socklen_t clientAddrLen = sizeof(clientAddr);
 		int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddr, &clientAddrLen);
 		if (clientSocket == -1) {
-			cerr << "Error: accpeting connection." << endl;
+			cerr << "Error: accepting connection." << endl;
 			continue;
 		} else {
-			cout << "Client " << clientSocket << " has been accpeted." << endl;
+			cout << "Client " << clientSocket << " has been accepted." << endl;
 			while (true) {
 				// // Get user input
 				// cout << "Enter a message to the client: ";
@@ -81,15 +81,10 @@ int main() {
 				char buffer[1024];
 				int bytesReceived = recv(clientSocket, buffer, sizeof(buffer), 0);
 				if (bytesReceived == -1) {
-					cerr << "Error: receving data from client" << endl;
+					cerr << "Error: receiving data from client" << endl;
 					close(clientSocket);
 				}
 				buffer[bytesReceived] = '\0';
-				string exitStr = "exit";
-				if (strcmp(buffer, exitStr.c_str()) == 0) {
-					cout << "exit" << endl;
-					break;
-				}
 				cout << "Message from client: " << buffer << endl;
 			}
 		}
