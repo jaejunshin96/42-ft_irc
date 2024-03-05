@@ -1,22 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Parser.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/26 19:35:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/05 20:00:16 by jaeshin          ###   ########.fr       */
+/*   Created: 2024/03/01 17:34:04 by jaeshin           #+#    #+#             */
+/*   Updated: 2024/03/05 18:48:48 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/Server.hpp"
+#ifndef PARSER_HPP
+#define PARSER_HPP
 
-int main(int argc, char **argv) {
-	if (argc != 3) {
-		cerr << "Usage: ./ircserv <PORT> <PASSWORD>" << endl;
-		return 1;
-	}
-	Server server = Server(argv[1], argv[2]);
-	return 0;
-}
+#include "Server.hpp"
+#include "Command.hpp"
+
+using namespace std;
+
+class Server;
+class Client;
+class Command;
+
+class Parser {
+	private:
+		Server *_server;
+		map<string, Command *> _cmds;
+
+	public:
+		Parser(Server *server);
+		~Parser();
+
+		void parse(Client *client, string &input);
+};
+
+#endif

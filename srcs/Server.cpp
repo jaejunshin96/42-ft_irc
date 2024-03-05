@@ -6,50 +6,39 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:59:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/02/28 19:27:58 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/05 19:59:16 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/Server.hpp"
 
-Server::Server() {
-	_serverFd = createServer(4242);
+Server::Server(const string &port, const string &password): _password(password) {
+	_port = stoi(port);
+	_serverFd = createServer(_port);
 
 	if (!_serverFd) {
 		cerr << "Error: creating a server." << endl;
 		exit(1);
 	}
 	_listening = 42;
+	_parser = new Parser(this);
 	start();
 };
 
 Server::~Server() {};
 
-//vector<Client> Server::getClients() const {
-//	return _clients;
-//};
+map<int, Client *> Server::getClients() const {
+	return _clients;
+};
 
 vector<Channel> Server::getChannels() const {
 	return _channels;
 };
 
-//void Server::addClient(string name) {
-//	Client newClient = Client(name);
-//	_clients.push_back(newClient);
-//};
-
-//void Server::rmClient(Client name) {
-
-//};
-
 void Server::addChannel(string name) {
 	Channel newChannel = Channel(name);
 	_channels.push_back(newChannel);
 };
-
-//void Server::rmChannel(Channel channel) {
-
-//};
 
 int Server::createServer(int port) {
 	// Create a socket, on failure returns -1.
@@ -68,7 +57,7 @@ int Server::createServer(int port) {
 	serverAddr.sin_port = htons(port);
 	serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
-	if (bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) == -1) {
+	if (bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0) {
 		cerr << "Error: binding socket." << endl;
 		close(serverSocket);
 		return 0;
@@ -116,8 +105,8 @@ void Server::start(void) {
 					connectClient();
 					break;
 				}
-				// message
-				message(it->fd);
+				// user input
+				handleInput(it->fd);
 			}
 		}
 	}
@@ -134,7 +123,7 @@ void Server::disconnectClient(int fd) {
 			break;
 		}
 	}
-	cout << client->getName() << " has disconnected." << endl;
+	cout << client->getHostname() << " has disconnected." << endl;
 	delete client;
 };
 
@@ -148,14 +137,19 @@ void Server::connectClient(void) {
 	pollfd pfd = {clientSocket, POLLIN, 0};
 	_pfds.push_back(pfd);
 
-	Client *client = new Client("jaejun");
+	char hostname[NI_MAXHOST];
+	int result = getnameinfo((sockaddr *)&clientAddr, clientAddrLen, hostname, NI_MAXHOST, NULL, 0, NI_NUMERICSERV);
+	if (result != 0) {
+		throw runtime_error("Error: getting a hostname on a client.");
+	}
+
+	Client *client = new Client(clientSocket, ntohs(clientAddr.sin_port), hostname);
 	_clients.insert(make_pair(clientSocket, client));
 
-	cout << "Client " << clientSocket << " " << client->getName() << " has been accepted." << endl;
+	cout << "Client " << clientSocket << " " << client->getHostname() << " has been accepted." << endl;
 }
 
-void Server::message(int fd) {
-	//Client *client = _clients.at(fd);
+string Server::readInput(int fd) {
 	string message;
 
 	char buffer[1024];
@@ -170,5 +164,16 @@ void Server::message(int fd) {
 		message.append(buffer);
 	}
 
-	cout << message;
+	return message;
+};
+
+void Server::handleInput(int fd) {
+	try {
+		Client *client = _clients.at(fd);
+		string message = readInput(fd);
+
+		_parser->parse(client, message);
+	} catch (const exception &e) {
+		cerr << e.what() << endl;
+	}
 };

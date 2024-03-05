@@ -3,6 +3,10 @@
 		"iostream": "cpp",
 		"iosfwd": "cpp",
 		"string": "cpp",
-		"stdexcept": "cpp"
+		"stdexcept": "cpp",
+		"map": "cpp",
+		"typeinfo": "cpp",
+		"system_error": "cpp",
+		"ostream": "cpp"
 	}
 }

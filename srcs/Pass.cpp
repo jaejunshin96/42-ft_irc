@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/26 19:35:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/05 20:00:16 by jaeshin          ###   ########.fr       */
+/*   Created: 2024/03/05 13:35:13 by jaeshin           #+#    #+#             */
+/*   Updated: 2024/03/05 19:19:28 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "include/Server.hpp"
+#include "../include/Command.hpp"
 
-int main(int argc, char **argv) {
-	if (argc != 3) {
-		cerr << "Usage: ./ircserv <PORT> <PASSWORD>" << endl;
-		return 1;
+Pass::Pass(Server *server, bool auth): Command(server, auth) {};
+
+Pass::~Pass() {};
+
+void Pass::execute(Client *client, vector<string> args) {
+	(void)client;
+	if (args.size() != 2) {
+		throw runtime_error("Error: PASS wrong arguments.");
 	}
-	Server server = Server(argv[1], argv[2]);
-	return 0;
-}
+};
