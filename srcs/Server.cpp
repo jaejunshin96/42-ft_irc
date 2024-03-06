@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:59:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/05 19:59:16 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/06 12:49:41 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ Server::Server(const string &port, const string &password): _password(password) 
 
 Server::~Server() {};
 
-map<int, Client *> Server::getClients() const {
-	return _clients;
-};
+int Server::getPort() const { return _port; };
 
-vector<Channel> Server::getChannels() const {
-	return _channels;
-};
+string Server::getPassword() const { return _password; };
+
+map<int, Client *> Server::getClients() const { return _clients; };
+
+vector<Channel> Server::getChannels() const { return _channels; };
 
 void Server::addChannel(string name) {
 	Channel newChannel = Channel(name);
@@ -92,7 +92,7 @@ void Server::start(void) {
 				continue;
 
 			if ((it->revents & POLLHUP) == POLLHUP) {
-				// disconnect
+				// disconnected
 				cout << "Disconnected." << endl;
 				disconnectClient(it->fd);
 				break;
@@ -123,7 +123,7 @@ void Server::disconnectClient(int fd) {
 			break;
 		}
 	}
-	cout << client->getHostname() << " has disconnected." << endl;
+	cout << client->getHostname() << client->getSockfd() << " has been disconnected." << endl;
 	delete client;
 };
 
@@ -146,7 +146,7 @@ void Server::connectClient(void) {
 	Client *client = new Client(clientSocket, ntohs(clientAddr.sin_port), hostname);
 	_clients.insert(make_pair(clientSocket, client));
 
-	cout << "Client " << clientSocket << " " << client->getHostname() << " has been accepted." << endl;
+	cout << client->getHostname() << client->getSockfd() << " has been accepted." << endl;
 }
 
 string Server::readInput(int fd) {

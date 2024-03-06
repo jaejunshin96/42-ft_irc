@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:59:48 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/05 19:11:31 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/06 16:21:17 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ class Command {
 };
 
 /* Child Class */
-class Pass : public Command {
+class Pass: public Command {
 	public:
 		Pass(Server *server, bool auth);
 		~Pass();
@@ -41,5 +41,20 @@ class Pass : public Command {
 		void execute(Client *client, vector<string> args);
 };
 
-#endif
+class Nick: public Command {
+	public:
+		Nick(Server *server, bool auth);
+		~Nick();
+		
+		void execute(Client *client, vector<string> args);
+};
 
+class User: public Command {
+	public:
+		User(Server *server, bool auth);
+		~User();
+		
+		void execute(Client *client, vector<string> args);
+};
+
+#endif

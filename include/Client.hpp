@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:09:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/05 14:54:03 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/06 17:49:37 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ class Channel;
 
 enum ClientState {
 	 HANDSHAKE,
-	 LOGIN,
+	 PWCHECKED,
+	 NICKCHECKED,
 	 REGISTERED,
 	 DISCONNECTED
 };
@@ -34,9 +35,10 @@ class Client {
 		int _sockfd;
 		int _port;
 
-		string _hostname;
 		string _nickname;
 		string _username;
+		string _hostname;
+		string _realname;
 
 		ClientState _clientState;
 		vector<Channel> _channels;
@@ -53,11 +55,15 @@ class Client {
 		string getHostname() const;
 		string getNickname() const;
 		string getUsername() const;
+		string getRealname() const;
 
 		ClientState getClientState() const;
 		vector<Channel> getChannels() const;
 
 		void setNickname(string newNick);
+		void setUsername(string newUser);
+		void setHostname(string newHost);
+		void setRealname(string newReal);
 		void setClientState(ClientState state);
 };
 

@@ -7,6 +7,7 @@
 		"map": "cpp",
 		"typeinfo": "cpp",
 		"system_error": "cpp",
-		"ostream": "cpp"
+		"ostream": "cpp",
+		"vector": "cpp"
 	}
 }
