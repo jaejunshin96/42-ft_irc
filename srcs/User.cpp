@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:21:41 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/07 16:55:56 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/08 18:06:22 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void User::execute(Client *client, vector<string> args) {
 		}
 		i++;
 	}
+	
 	client->setRealname(realname);
-	cout << args[0] << " " << client->getUsername() << " " << client->getHostname() \
-		<< " " << args[3] << " " << client->getRealname() << endl;
+	client->reply(RPL_WELCOMEMSG(client->getInfo()));
 };
