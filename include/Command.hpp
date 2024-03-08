@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:59:48 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/06 16:21:17 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/07 19:37:33 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ class Command {
 		Command(Server *server, bool auth);
 		virtual ~Command();
 
+		bool authRequired() const;
+
 		virtual void execute(Client *client, vector<string> args) = 0;
 };
 
@@ -45,7 +47,7 @@ class Nick: public Command {
 	public:
 		Nick(Server *server, bool auth);
 		~Nick();
-		
+
 		void execute(Client *client, vector<string> args);
 };
 
@@ -53,7 +55,7 @@ class User: public Command {
 	public:
 		User(Server *server, bool auth);
 		~User();
-		
+
 		void execute(Client *client, vector<string> args);
 };
 

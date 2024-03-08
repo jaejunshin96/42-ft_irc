@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:00:21 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/05 14:53:37 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/07 15:28:12 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <iostream>
 #include <vector>
 
+#include "Server.hpp"
 #include "Client.hpp"
 
 using namespace std;

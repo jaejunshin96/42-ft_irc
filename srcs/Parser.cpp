@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 17:39:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/06 17:57:41 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/07 23:05:28 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void Parser::parse(Client *client, string &input) {
 	size_t start = input.find_first_not_of(" \t\n\r");
 	size_t end = input.find_last_not_of(" \t\n\r");
 	if (start == string::npos)
-		return;
+		return ;
 	trimmedStr = input.substr(start, end + 1);
 
 	vector<string> tokens;
@@ -35,8 +35,14 @@ void Parser::parse(Client *client, string &input) {
 		tokens.push_back(token);
 	}
 
-	if (_cmds[tokens[0]])
+	if (_cmds[tokens[0]]) {
+		if (!client->isRegistered() && _cmds[tokens[0]]->authRequired()) {
+			client->reply(ERR_NOTREGISTERED(client->getNickname()));
+			return ;
+		}
 		_cmds[tokens[0]]->execute(client, tokens);
-	else
-		throw runtime_error("Error: Wrong commands.");
+	} else {
+		client->reply(ERR_UNKNOWNCOMMAND(tokens[0]));
+		return ;
+	}
 };

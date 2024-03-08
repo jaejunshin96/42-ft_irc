@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:09:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/06 17:49:37 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/07 17:04:29 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 #include <iostream>
 #include <vector>
 
+#include "Server.hpp"
 #include "Channel.hpp"
+#include "Reply.hpp"
 
 using namespace std;
 
@@ -56,6 +58,7 @@ class Client {
 		string getNickname() const;
 		string getUsername() const;
 		string getRealname() const;
+		string getInfo() const;
 
 		ClientState getClientState() const;
 		vector<Channel> getChannels() const;
@@ -65,6 +68,11 @@ class Client {
 		void setHostname(string newHost);
 		void setRealname(string newReal);
 		void setClientState(ClientState state);
+
+		bool isRegistered() const;
+
+		void write(const string &message);
+		void reply(const string &message);
 };
 
 #endif

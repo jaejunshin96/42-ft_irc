@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:21:41 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/06 18:06:20 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/07 16:55:56 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,19 @@ User::~User() {};
 
 void User::execute(Client *client, vector<string> args) {
 	size_t argSize = args.size();
-	if (client->getClientState() == HANDSHAKE ||\
-		 client->getClientState() == PWCHECKED)
-		throw runtime_error("Error: PASS and NICK should come first.");
-	else if (argSize < 5 || args[4][0] != ':') {
-		throw runtime_error("Error: USER <username> <hostname> \
-			<servername> :<realname>");
+	if (client->getClientState() == REGISTERED) {
+		client->reply(ERR_ALREADYREGISTRED(client->getNickname()));
+		return ;
+	}else if (client->getClientState() == HANDSHAKE ||\
+		 		client->getClientState() == PWCHECKED) {
+		client->reply(client->getNickname() + " :PASS/NICK should come first");
+		return ;
+	} else if (argSize < 5 || args[4][0] != ':') {
+		client->reply(ERR_NEEDMOREPARAMS(client->getNickname(), "USER") + \
+			"\nUSER <username> <hostname> <servername> :<realname>");
+		return ;
 	}
-	
+
 	client->setUsername(args[1]);
 	client->setHostname(args[2]);
 	size_t i = 4;
