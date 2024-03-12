@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:03 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/05 19:01:03 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/11 15:45:31 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,16 @@ Channel::~Channel() {};
 
 string Channel::getName() const { return _name; };
 
-vector<Client> Channel::getClients() const { return _clients; };
+vector<Client *> Channel::getClients() const { return _clients; };
 
-void Channel::setName(string newName) { _name = newName; };
+void Channel::setName(string &newName) { _name = newName; };
 
+Channel *Channel::createChannel(string &channelName) {
+	Channel *newChannel = new Channel(channelName);
+
+	return newChannel;
+};
+
+void Channel::addClient(Client *client) {
+	_clients.push_back(client);
+};

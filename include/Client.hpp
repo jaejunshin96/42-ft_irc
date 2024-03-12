@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:09:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/07 17:04:29 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/11 15:35:13 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ class Client {
 		string _realname;
 
 		ClientState _clientState;
-		vector<Channel> _channels;
+		vector<Channel *> _channels;
 
 		Client();
 
@@ -59,15 +59,16 @@ class Client {
 		string getUsername() const;
 		string getRealname() const;
 		string getInfo() const;
-
 		ClientState getClientState() const;
-		vector<Channel> getChannels() const;
+		vector<Channel *> getChannels() const;
 
 		void setNickname(string newNick);
 		void setUsername(string newUser);
 		void setHostname(string newHost);
 		void setRealname(string newReal);
 		void setClientState(ClientState state);
+
+		void addChannel(Channel *channel);
 
 		bool isRegistered() const;
 

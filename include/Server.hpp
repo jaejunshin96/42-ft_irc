@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 17:54:57 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/07 15:16:45 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/11 14:41:38 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ class Server {
 
 		vector<pollfd> _pfds;
 		map<int, Client *> _clients;
-		vector<Channel> _channels;
+		vector<Channel *> _channels;
 		Parser *_parser;
 
 	public:
@@ -63,7 +63,7 @@ class Server {
 		int getPort() const;
 		string getPassword() const;
 		map<int, Client *> getClients() const;
-		vector<Channel> getChannels() const;
+		vector<Channel *> getChannels() const;
 
 		void addChannel(string name);
 

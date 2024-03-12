@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/07 17:05:27 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/11 15:37:29 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 Client::Client() {};
 
 Client::Client(int sockfd, int port, string hostname): \
-	_sockfd(sockfd), _port(port), _hostname(hostname) {
-		setClientState(HANDSHAKE);
-	};
+				_sockfd(sockfd), _port(port), _hostname(hostname) {
+	setClientState(HANDSHAKE);
+};
 
 Client::~Client() {};
 
@@ -43,7 +43,7 @@ string Client::getInfo() const {
 
 ClientState Client::getClientState() const { return _clientState; };
 
-vector<Channel> Client::getChannels() const { return _channels; };
+vector<Channel *> Client::getChannels() const { return _channels; };
 
 /* setters */
 void Client::setNickname(string newNick) { _nickname = newNick; };
@@ -55,6 +55,9 @@ void Client::setHostname(string newHost) { _hostname = newHost; };
 void Client::setRealname(string newReal) { _realname = newReal; };
 
 void Client::setClientState(ClientState newState) { _clientState = newState; };
+
+/* other funcs */
+void Client::addChannel(Channel *channel) { _channels.push_back(channel); }
 
 bool Client::isRegistered() const {
 	return _clientState == REGISTERED ? true : false;

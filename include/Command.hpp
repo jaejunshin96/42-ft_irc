@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:59:48 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/07 19:37:33 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/11 16:06:29 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,14 @@ class User: public Command {
 	public:
 		User(Server *server, bool auth);
 		~User();
+
+		void execute(Client *client, vector<string> args);
+};
+
+class Join: public Command {
+	public:
+		Join(Server *server, bool auth);
+		~Join();
 
 		void execute(Client *client, vector<string> args);
 };
