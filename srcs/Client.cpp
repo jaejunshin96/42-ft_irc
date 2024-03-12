@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/12 19:21:15 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/12 23:42:47 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,8 +76,10 @@ void Client::reply(const string &message) {
 
 void Client::broadcast(string &input) {
 	string broadcastMessage = _nickname + ": " + input;
-	vector<Client *> clients = _channel->getClients();
-	for (vector<Client *>::iterator it = clients.begin(); it != clients.end(); ++it) {
-		send((*it)->getSockfd(), broadcastMessage.c_str(), broadcastMessage.length(), 0);
+	map<string, Client *> clients = _channel->getClients();
+	map<string, Client *>::iterator it;
+	for (it = clients.begin(); it != clients.end(); ++it) {
+		int clientSockfd = it->second->getSockfd();
+		send(clientSockfd, broadcastMessage.c_str(), broadcastMessage.length(), 0);
 	}
 };

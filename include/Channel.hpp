@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:00:21 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/12 17:28:15 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/12 23:35:56 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class Channel {
 	private:
 		string _name;
 		string _password;
-		vector<Client *> _clients;
+		map<string, Client *> _clients;
 
 	public:
 		Channel();
@@ -36,10 +36,10 @@ class Channel {
 
 		string getName() const;
 		string getPassword() const;
-		vector<Client *> getClients() const;
+		map<string, Client *> getClients() const;
 
 		void setName(string &newName);
-		
+
 		void addClient(Client *client);
 };
 

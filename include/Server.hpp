@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Server.hpp                                         :+:      :+:    :+:   */
+/*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 17:54:57 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/12 17:58:56 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/12 23:38:35 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ class Server {
 
 		vector<pollfd> _pfds;
 		map<int, Client *> _clients;
-		vector<Channel *> _channels;
+		map<string, Channel *> _channels;
 		Parser *_parser;
 
 	public:
@@ -63,7 +63,7 @@ class Server {
 		int getPort() const;
 		string getPassword() const;
 		map<int, Client *> getClients() const;
-		vector<Channel *> getChannels() const;
+		map<string, Channel *> getChannels() const;
 
 		void addChannel(Channel *newChannel);
 
