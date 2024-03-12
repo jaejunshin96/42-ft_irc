@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:03 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/11 15:45:31 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/12 18:10:54 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,19 @@
 
 Channel::Channel() {};
 
-Channel::Channel(string name): _name(name) {};
+Channel::Channel(string &name, string &password): _name(name), _password(password) {};
 
 Channel::~Channel() {};
 
+/* getters */
 string Channel::getName() const { return _name; };
+
+string Channel::getPassword() const { return _password; };
 
 vector<Client *> Channel::getClients() const { return _clients; };
 
+/* setters */
 void Channel::setName(string &newName) { _name = newName; };
-
-Channel *Channel::createChannel(string &channelName) {
-	Channel *newChannel = new Channel(channelName);
-
-	return newChannel;
-};
 
 void Channel::addClient(Client *client) {
 	_clients.push_back(client);

@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:09:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/11 15:35:13 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/12 19:20:51 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ enum ClientState {
 	 PWCHECKED,
 	 NICKCHECKED,
 	 REGISTERED,
+	 JOINED,
 	 DISCONNECTED
 };
 
@@ -43,7 +44,7 @@ class Client {
 		string _realname;
 
 		ClientState _clientState;
-		vector<Channel *> _channels;
+		Channel *_channel;
 
 		Client();
 
@@ -60,20 +61,20 @@ class Client {
 		string getRealname() const;
 		string getInfo() const;
 		ClientState getClientState() const;
-		vector<Channel *> getChannels() const;
+		Channel *getChannel() const;
 
 		void setNickname(string newNick);
 		void setUsername(string newUser);
 		void setHostname(string newHost);
 		void setRealname(string newReal);
 		void setClientState(ClientState state);
-
-		void addChannel(Channel *channel);
+		void setChannel(Channel *channel);
 
 		bool isRegistered() const;
 
 		void write(const string &message);
 		void reply(const string &message);
+		void broadcast(string &input);
 };
 
 #endif

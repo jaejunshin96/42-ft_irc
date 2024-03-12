@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.hpp                                         :+:      :+:    :+:   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 17:54:57 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/11 14:41:38 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/12 17:58:56 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ class Server {
 		map<int, Client *> getClients() const;
 		vector<Channel *> getChannels() const;
 
-		void addChannel(string name);
+		void addChannel(Channel *newChannel);
 
 		int createServer(int port);
 		void start(void);

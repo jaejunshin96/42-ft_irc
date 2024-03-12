@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/11 15:37:29 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/12 19:21:15 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ string Client::getInfo() const {
 
 ClientState Client::getClientState() const { return _clientState; };
 
-vector<Channel *> Client::getChannels() const { return _channels; };
+Channel *Client::getChannel() const { return _channel; };
 
 /* setters */
 void Client::setNickname(string newNick) { _nickname = newNick; };
@@ -56,9 +56,9 @@ void Client::setRealname(string newReal) { _realname = newReal; };
 
 void Client::setClientState(ClientState newState) { _clientState = newState; };
 
-/* other funcs */
-void Client::addChannel(Channel *channel) { _channels.push_back(channel); }
+void Client::setChannel(Channel *channel) { _channel = channel; }
 
+/* other funcs */
 bool Client::isRegistered() const {
 	return _clientState == REGISTERED ? true : false;
 };
@@ -72,4 +72,12 @@ void Client::write(const string &message) {
 
 void Client::reply(const string &message) {
 	this->write(":" + getInfo() + " " + message);
+};
+
+void Client::broadcast(string &input) {
+	string broadcastMessage = _nickname + ": " + input;
+	vector<Client *> clients = _channel->getClients();
+	for (vector<Client *>::iterator it = clients.begin(); it != clients.end(); ++it) {
+		send((*it)->getSockfd(), broadcastMessage.c_str(), broadcastMessage.length(), 0);
+	}
 };

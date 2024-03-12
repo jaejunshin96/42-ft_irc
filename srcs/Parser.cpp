@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 17:39:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/11 16:32:00 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/12 19:21:32 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,12 @@ void Parser::parse(Client *client, string &input) {
 		}
 		_cmds[tokens[0]]->execute(client, tokens);
 	} else {
-		client->reply(ERR_UNKNOWNCOMMAND(tokens[0]));
-		return ;
+		if (client->getClientState() == JOINED) {
+			client->broadcast(input);
+			return ;
+		} else {
+			client->reply(ERR_UNKNOWNCOMMAND(tokens[0]));
+			return ;
+		}
 	}
 };
