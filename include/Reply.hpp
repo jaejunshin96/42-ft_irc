@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:46:05 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/12 19:15:49 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/13 17:05:03 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #define ERR_NEEDMOREPARAMS(nick, cmd)	"461 " + nick + " " + cmd + " :Not enough parameters"
 #define ERR_ALREADYREGISTRED(nick)		"462 " + nick + " :You may not reregister"
 #define ERR_PASSWDMISMATCH(nick)		"464 " + nick + " :Password incorrect"
+#define ERR_BADCHANNELKEY(channel)		"475" + channel + " :Password incorrect"
 
 /* reply */
 #define RPL_WELCOMEMSG(names)			"001 :Welcome to the ft_irc Network"

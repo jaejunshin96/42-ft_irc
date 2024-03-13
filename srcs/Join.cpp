@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 16:07:45 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/12 23:52:10 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/13 17:10:40 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,21 @@ void Join::execute(Client *client, vector<string> args) {
 	}
 
 	string name = args[1];
-	if (_server->getChannels()[name]) {
-		Channel *chToJoin = _server->getChannels()[name];
-		client->setChannel(chToJoin);
-		chToJoin->addClient(client);
-		client->reply(RPL_JOIN(client->getNickname(), name));
-		client->setClientState(JOINED);
-		return ;
-	}
 	string password = args.size() > 2 ? args[2] : "";
+	Channel *chToJoin;
+	if (chToJoin = _server->getChannels()[name]) {
+		if (_server->getChannels()[name]->getPassword() == password) {
+			//  _server->getChannels()[name];
+			client->setChannel(chToJoin);
+			chToJoin->addClient(client);
+			client->reply(RPL_JOIN(client->getNickname(), name));
+			client->setClientState(JOINED);
+			return ;
+		} else if (_server->getChannels()[name]->getPassword() != password) {
+			client->reply(ERR_BADCHANNELKEY(chToJoin->getName()));
+			return ;
+		}
+	}
 	Channel *newChannel = new Channel(name, password);
 
 	client->setChannel(newChannel);
