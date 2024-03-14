@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 17:54:57 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/12 23:38:35 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/14 22:55:01 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ class Server {
 		map<string, Channel *> getChannels() const;
 
 		void addChannel(Channel *newChannel);
+		void rmChannel(string &chName);
 
 		int createServer(int port);
 		void start(void);

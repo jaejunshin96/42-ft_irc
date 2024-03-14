@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 17:39:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/12 19:21:32 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/14 23:38:37 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ Parser::Parser(Server *server): _server(server) {
 	_cmds["NICK"] = new Nick(_server, false);
 	_cmds["USER"] = new User(_server, false);
 	_cmds["JOIN"] = new Join(_server, true);
+	_cmds["PART"] = new Part(_server, true);
 };
 
 Parser::~Parser() {};
@@ -44,7 +45,7 @@ void Parser::parse(Client *client, string &input) {
 		_cmds[tokens[0]]->execute(client, tokens);
 	} else {
 		if (client->getClientState() == JOINED) {
-			client->broadcast(input);
+			client->getChannel()->broadcast(client, input, true);
 			return ;
 		} else {
 			client->reply(ERR_UNKNOWNCOMMAND(tokens[0]));

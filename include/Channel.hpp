@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:00:21 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/12 23:35:56 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/14 23:37:03 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 
 using namespace std;
 
+class Server;
 class Client;
 
 class Channel {
@@ -41,6 +42,9 @@ class Channel {
 		void setName(string &newName);
 
 		void addClient(Client *client);
+		void rmClient(string &name);
+
+		void broadcast(Client *client, string input, bool isMsg);
 };
 
 #endif

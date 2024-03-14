@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:21:41 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/12 18:15:56 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/13 21:54:53 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ User::~User() {};
 
 void User::execute(Client *client, vector<string> args) {
 	size_t argSize = args.size();
-	if (client->getClientState() == REGISTERED) {
+	if (client->isRegistered()) {
 		client->reply(ERR_ALREADYREGISTRED(client->getNickname()));
 		return ;
 	}else if (client->getClientState() == HANDSHAKE ||\

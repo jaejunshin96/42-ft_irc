@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:09:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/12 19:20:51 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/14 22:15:56 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 using namespace std;
 
+class Server;
 class Channel;
 
 enum ClientState {
@@ -74,7 +75,9 @@ class Client {
 
 		void write(const string &message);
 		void reply(const string &message);
-		void broadcast(string &input);
+		void join(Server *server, Channel *channel, string &name, bool isExisting);
+		void leave(Server *server, Channel *channel, string &name);
+		void broadcast(string input);
 };
 
 #endif

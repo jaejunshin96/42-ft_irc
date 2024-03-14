@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:59:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/12 23:37:33 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/14 22:56:12 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,10 @@ map<string, Channel *> Server::getChannels() const { return _channels; };
 
 void Server::addChannel(Channel *newChannel) {
 	_channels.insert(make_pair(newChannel->getName(), newChannel));
+};
+
+void Server::rmChannel(string &chName) {
+	_channels.erase(chName);
 };
 
 int Server::createServer(int port) {
@@ -129,10 +133,17 @@ void Server::disconnectClient(int fd) {
 void Server::connectClient(void) {
 	sockaddr_in clientAddr;
 	socklen_t clientAddrLen = sizeof(clientAddr);
+
+	// Connect the sockets between client and server
 	int clientSocket = accept(_serverFd, (struct sockaddr *)&clientAddr, &clientAddrLen);
 	if (clientSocket == -1)
 		throw runtime_error("Error: accepting a clint.");
 
+	// Set the socket non-blocking
+	if (fcntl(clientSocket, F_SETFL, O_NONBLOCK) == -1)
+		throw runtime_error("Error: setting a client socket non-blocking.");
+
+	// Add the socket to pollfd
 	pollfd pfd = {clientSocket, POLLIN, 0};
 	_pfds.push_back(pfd);
 

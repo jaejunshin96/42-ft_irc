@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/12 23:42:47 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/14 23:38:24 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ void Client::setChannel(Channel *channel) { _channel = channel; }
 
 /* other funcs */
 bool Client::isRegistered() const {
-	return _clientState == REGISTERED ? true : false;
+	if (_clientState == REGISTERED || _clientState == JOINED) {
+		return true;
+	}
+	return false;
 };
 
 void Client::write(const string &message) {
@@ -74,7 +77,25 @@ void Client::reply(const string &message) {
 	this->write(":" + getInfo() + " " + message);
 };
 
-void Client::broadcast(string &input) {
+void Client::join(Server *server, Channel *channel, string &name, bool isExisting) {
+	if (!isExisting)
+		server->addChannel(channel);
+	this->setChannel(channel);
+	channel->addClient(this);
+	this->setClientState(JOINED);
+	channel->broadcast(this, RPL_JOIN(this->getNickname(), name) + "\n", false);
+};
+
+void Client::leave(Server *server, Channel *channel, string &name) {
+	if (channel->getClients().size() == 1)
+		server->rmChannel(name);
+	channel->broadcast(this, RPL_PART(this->getNickname(), name) + "\n", false);
+	this->setChannel(NULL);
+	channel->rmClient(_nickname);
+	this->setClientState(REGISTERED);
+};
+
+void Client::broadcast(string input) {
 	string broadcastMessage = _nickname + ": " + input;
 	map<string, Client *> clients = _channel->getClients();
 	map<string, Client *>::iterator it;
