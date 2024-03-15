@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:59:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/14 22:56:12 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/15 12:28:34 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,13 @@ int Server::createServer(int port) {
 		cout << "socket() is OK." << endl;
 	}
 
-	// Bind the socket
+	// Connect through local network
 	struct sockaddr_in serverAddr;
 	serverAddr.sin_family = AF_INET;
-	// Connect through local network
 	serverAddr.sin_port = htons(port);
 	serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
 
+	// Bind the socket
 	if (bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0) {
 		cerr << "Error: binding socket." << endl;
 		close(serverSocket);
@@ -96,7 +96,6 @@ void Server::start(void) {
 
 			if ((it->revents & POLLHUP) == POLLHUP) {
 				// disconnected
-				cout << "Disconnected." << endl;
 				disconnectClient(it->fd);
 				break;
 			}
@@ -104,7 +103,6 @@ void Server::start(void) {
 			if ((it->revents & POLLIN) == POLLIN) {
 				if (it->fd == _serverFd) {
 					// connected
-					cout << "Connected." << endl;
 					connectClient();
 					break;
 				}
@@ -156,7 +154,7 @@ void Server::connectClient(void) {
 	Client *client = new Client(clientSocket, ntohs(clientAddr.sin_port), hostname);
 	_clients.insert(make_pair(clientSocket, client));
 
-	cout << client->getHostname() << client->getSockfd() << " has been accepted." << endl;
+	cout << client->getHostname() << client->getSockfd() << " has been connected." << endl;
 }
 
 string Server::readInput(int fd) {

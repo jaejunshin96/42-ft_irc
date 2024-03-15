@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 17:39:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/14 23:38:37 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/15 12:40:49 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ Parser::Parser(Server *server): _server(server) {
 	_cmds["PASS"] = new Pass(_server, false);
 	_cmds["NICK"] = new Nick(_server, false);
 	_cmds["USER"] = new User(_server, false);
+	_cmds["QUIT"] = new Quit(_server, false);
+
 	_cmds["JOIN"] = new Join(_server, true);
 	_cmds["PART"] = new Part(_server, true);
 };

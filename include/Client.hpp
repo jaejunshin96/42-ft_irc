@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:09:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/14 22:15:56 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/15 11:18:59 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ class Client {
 		void reply(const string &message);
 		void join(Server *server, Channel *channel, string &name, bool isExisting);
 		void leave(Server *server, Channel *channel, string &name);
-		void broadcast(string input);
+		// void broadcast(string input);
 };
 
 #endif

@@ -1,9 +1,11 @@
-NAME	= ircserv
+NAME	=	ircserv
 
-CC		= c++
-CFLAGS	= -Wall -Wextra -Werror -std=c++98
+CC		=	c++
+CFLAGS	=	-Wall -Wextra -Werror -std=c++98
 
-SRCS	= srcs/*.cpp main.cpp
+SRCS	=	srcs/*.cpp \
+			srcs/cmds/*.cpp \
+			main.cpp
 
 $(NAME):
 	@$(CC) $(CFLAGS) $(SRCS) -o $(NAME)
