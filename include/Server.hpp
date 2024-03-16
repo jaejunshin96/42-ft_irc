@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 17:54:57 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/14 22:55:01 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/16 19:14:40 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include <cstring>
 #include <sstream>
 #include <fcntl.h>
+#include <signal.h>
 
 #include <algorithm>
 #include <vector>

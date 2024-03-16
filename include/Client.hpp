@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:09:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/15 11:18:59 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/16 17:59:28 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ class Client {
 
 		int getSockfd() const;
 		int getPort() const;
-
 		string getHostname() const;
 		string getNickname() const;
 		string getUsername() const;
