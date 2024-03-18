@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:59:48 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/15 11:30:53 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/17 22:48:50 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,14 @@ class Quit: public Command {
 	public:
 		Quit(Server *server, bool auth);
 		~Quit();
+
+		void execute(Client *client, vector<string> args);
+};
+
+class Privmsg: public Command {
+	public:
+		Privmsg(Server *server, bool auth);
+		~Privmsg();
 
 		void execute(Client *client, vector<string> args);
 };

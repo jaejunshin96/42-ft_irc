@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 17:54:57 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/16 19:14:40 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/18 16:11:11 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,9 @@ class Server {
 		string getPassword() const;
 		map<int, Client *> getClients() const;
 		map<string, Channel *> getChannels() const;
+
+		Client *searchClient(string &name);
+		Channel *searchChannel(string &name);
 
 		void addChannel(Channel *newChannel);
 		void rmChannel(string &chName);

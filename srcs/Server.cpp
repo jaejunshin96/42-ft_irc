@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:59:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/16 19:18:30 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/18 17:16:29 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,20 @@ string Server::getPassword() const { return _password; };
 map<int, Client *> Server::getClients() const { return _clients; };
 
 map<string, Channel *> Server::getChannels() const { return _channels; };
+
+Client *Server::searchClient(string &name) {
+	map<int, Client *>::iterator it;
+
+	for (it = _clients.begin(); it != _clients.end(); it++) {
+		if (it->second->getNickname() == name)
+			return it->second;
+	}
+	return NULL;
+};
+
+Channel *Server::searchChannel(string &name) {
+	return _channels[name] ? _channels[name] : NULL;
+};
 
 void Server::addChannel(Channel *newChannel) {
 	_channels.insert(make_pair(newChannel->getName(), newChannel));
@@ -120,7 +134,8 @@ void Server::disconnectClient(int fd) {
 			_clients.erase(fd);
 			_pfds.erase(it);
 			close(fd);
-			cout << client->getHostname() << fd << " has been disconnected." << endl;
+			cout << client->getHostname() << " " << fd <<\
+				 " has been disconnected." << endl;
 			delete client;
 			break;
 		}
@@ -153,7 +168,8 @@ void Server::connectClient(void) {
 	Client *client = new Client(clientSocket, ntohs(clientAddr.sin_port), hostname);
 	_clients.insert(make_pair(clientSocket, client));
 
-	cout << client->getHostname() << client->getSockfd() << " has been connected." << endl;
+	cout << client->getHostname() << " " << client->getSockfd() <<\
+		" has been connected." << endl;
 }
 
 string Server::readInput(int fd) {

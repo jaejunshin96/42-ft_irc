@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/15 12:07:22 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/18 17:17:24 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ Client::Client() {};
 Client::Client(int sockfd, int port, string hostname): \
 				_sockfd(sockfd), _port(port), _hostname(hostname) {
 	setClientState(HANDSHAKE);
-	_channel = NULL;
 };
 
 Client::~Client() {};
@@ -96,12 +95,24 @@ void Client::leave(Server *server, Channel *channel, string &name) {
 	this->setClientState(REGISTERED);
 };
 
-// void Client::broadcast(string input) {
-// 	string broadcastMessage = _nickname + ": " + input;
-// 	map<string, Client *> clients = _channel->getClients();
-// 	map<string, Client *>::iterator it;
-// 	for (it = clients.begin(); it != clients.end(); ++it) {
-// 		int clientSockfd = it->second->getSockfd();
-// 		send(clientSockfd, broadcastMessage.c_str(), broadcastMessage.length(), 0);
-// 	}
-// };
+void Client::privmsg(Client *tClient, Channel *tChannel, vector<string> input) {
+	string msg;
+	size_t inputSize = input.size();
+	size_t i = 2;
+	while (i <= inputSize - 1) {
+		msg += input[i] + " ";
+		i++;
+	}
+	msg = ":" + getInfo() + " PRIVMSG: " + msg + "\r\n";
+	if (tClient) {
+		send(tClient->getSockfd(), msg.c_str(), msg.length(), 0);
+	} else if (tChannel) {
+		map<string, Client *> clients = tChannel->getClients();
+		map<string, Client *>::iterator it;
+		for (it = clients.begin(); it != clients.end(); ++it) {
+			int clientSockfd = it->second->getSockfd();
+			send(clientSockfd, msg.c_str(), msg.length(), 0);
+		}
+	}
+	return ;
+};
