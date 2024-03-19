@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Privmsg.cpp                                        :+:      :+:    :+:   */
+/*   Mode.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/17 22:50:11 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/18 21:09:47 by jaeshin          ###   ########.fr       */
+/*   Created: 2024/03/19 21:10:32 by jaeshin           #+#    #+#             */
+/*   Updated: 2024/03/19 23:36:24 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/Command.hpp"
 
-Privmsg::Privmsg(Server *server, bool auth): Command(server, auth) {};
+Mode::Mode(Server *server, bool auth): Command(server, auth) {};
 
-Privmsg::~Privmsg() {};
+Mode::~Mode() {};
 
-void Privmsg::execute(Client *client, vector<string> args) {
-	Client *targetClient;
-	Channel *targetChannel;
-
-	targetClient = _server->searchClient(args[1]);
-	targetChannel = _server->searchChannel(args[1]);
-
+void Mode::execute(Client *client, vector<string> args) {
+	Channel *channel = client->getChannel();
 	if (args.size() < 2) {
-		client->reply(ERR_NORECIPIENT);
+		client->reply(ERR_NEEDMOREPARAMS(client->getNickname(), "MODE"));
 		return ;
-	} else if (!targetClient && !targetChannel) {
-		client->reply(ERR_NOSUCHNICK(args[1]));
+	} else if (!channel) {
+		client->reply(ERR_NOTONCHANNEL);
+		return ;
+	} else if (!channel->searchOperator(client->getNickname())) {
+		client->reply(ERR_CHANOPRIVSNEEDED);
 		return ;
 	}
 
-	client->privmsg(targetClient, targetChannel, args);
+	//if (args[1] == "-i") {
+	//	if (client)
+	//}
 };
+

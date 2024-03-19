@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 16:07:45 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/15 11:24:11 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/19 21:51:16 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,5 @@ void Join::execute(Client *client, vector<string> args) {
 
 	Channel *newChannel = new Channel(name, password);
 	client->join(_server, newChannel, name, false);
+	newChannel->addOperator(client->getNickname());
 };

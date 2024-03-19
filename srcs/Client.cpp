@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/18 17:17:24 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/19 22:18:40 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ Client::Client() {};
 Client::Client(int sockfd, int port, string hostname): \
 				_sockfd(sockfd), _port(port), _hostname(hostname) {
 	setClientState(HANDSHAKE);
+	_channel = NULL;
+	_isInvited = false;
 };
 
 Client::~Client() {};
@@ -45,6 +47,8 @@ ClientState Client::getClientState() const { return _clientState; };
 
 Channel *Client::getChannel() const { return _channel; };
 
+bool Client::isInvited() const { return _isInvited; };
+
 /* setters */
 void Client::setNickname(string newNick) { _nickname = newNick; };
 
@@ -56,7 +60,9 @@ void Client::setRealname(string newReal) { _realname = newReal; };
 
 void Client::setClientState(ClientState newState) { _clientState = newState; };
 
-void Client::setChannel(Channel *channel) { _channel = channel; }
+void Client::setChannel(Channel *channel) { _channel = channel; };
+
+void Client::setInvited(void) { _isInvited = true; };
 
 /* other funcs */
 bool Client::isRegistered() const {

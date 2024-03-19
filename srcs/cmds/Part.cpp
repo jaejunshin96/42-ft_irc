@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/14 16:46:12 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/15 11:24:18 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/19 21:54:58 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,5 @@ void Part::execute(Client *client, vector<string> args) {
 		return ;
 	}
 
-	// leave
 	client->leave(_server, chToLeave, chName);
 };
