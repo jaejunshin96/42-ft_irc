@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 17:59:48 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/19 21:09:52 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/21 13:43:39 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,14 @@ class Mode: public Command {
 	public:
 		Mode(Server *server, bool auth);
 		~Mode();
+
+		void execute(Client *client, vector<string> args);
+};
+
+class Kick: public Command {
+	public:
+		Kick(Server *server, bool auth);
+		~Kick();
 
 		void execute(Client *client, vector<string> args);
 };

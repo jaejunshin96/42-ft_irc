@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:00:21 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/19 23:33:24 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/21 16:51:23 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,14 @@ class Channel {
 		string _name;
 		string _password;
 
-		bool _inviteOnly;
-
 		map<string, Client *> _clients;
 		vector<string> _ops;
+
+		bool _inviteOnly;
+		bool _topicRestricted;
+		bool _pwRequired;
+		bool _clientLimited;
+		int _limit;
 
 	public:
 		Channel();
@@ -41,19 +45,30 @@ class Channel {
 
 		string getName() const;
 		string getPassword() const;
-		bool getInviteState() const;
 		map<string, Client *> getClients() const;
 		vector<string> getOperators() const;
+		bool getInviteState() const;
+		bool getTopicRestrict() const;
+		bool getPwRequired() const;
+		bool getClientLimited() const;
+		int getLimit() const;
+		int getClientSize() const;
 
 		void setName(string &newName);
 		void setInviteStatus(bool toggle);
+		void setTopicRestrict(bool toggle);
+		void setPwRequired(bool toggle);
+		void setClientLimited(bool toggle);
+		void setLimit(int limit);
 
 		void addClient(Client *client);
 		void rmClient(const string &name);
 
 		void addOperator(const string &nick);
 		void rmOperator(const string &nick);
+		bool searchClient(const string &nick);
 		bool searchOperator(const string &nick);
+		void kickClient(Client *op, Client *target);
 
 		void broadcast(Client *client, string input, bool isMsg);
 };

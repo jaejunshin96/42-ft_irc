@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 21:10:32 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/19 23:36:24 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/21 16:29:58 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,66 @@ Mode::Mode(Server *server, bool auth): Command(server, auth) {};
 Mode::~Mode() {};
 
 void Mode::execute(Client *client, vector<string> args) {
+	/* Handles MODE error */
 	Channel *channel = client->getChannel();
 	if (args.size() < 2) {
 		client->reply(ERR_NEEDMOREPARAMS(client->getNickname(), "MODE"));
 		return ;
 	} else if (!channel) {
-		client->reply(ERR_NOTONCHANNEL);
+		client->reply(ERR_NOTONCHANNEL(channel->getName()));
 		return ;
 	} else if (!channel->searchOperator(client->getNickname())) {
-		client->reply(ERR_CHANOPRIVSNEEDED);
+		client->reply(ERR_CHANOPRIVSNEEDED(channel->getName()));
 		return ;
 	}
 
-	//if (args[1] == "-i") {
-	//	if (client)
-	//}
+	/* Handles MODE flags */
+	//i - invite, t - topic, k - password, o - operator privilege, l - limit
+	if (args[1] == "-i" || args[1] == "+i") {
+		args[1] == "-i" ? channel->setInviteStatus(false) :\
+							channel->setInviteStatus(true);
+		return ;
+	} else if (args[1] == "-t" || args[1] == "+t") {
+		args[1] == "-t" ? channel->setTopicRestrict(false) :\
+							channel->setTopicRestrict(true);
+		return ;
+	} else if (args[1] == "-k" || args[1] == "+k") {
+		args[1] == "-k" ? channel->setPwRequired(false) :\
+							channel->setPwRequired(true);
+		return ;
+	} else if (args[1] == "-o" || args[1] == "+o") {
+		if (args.size() < 3) {
+			client->reply(ERR_NEEDMOREPARAMS(client->getNickname(), ("MODE " + args[1])));
+			return ;
+		} else if (!channel->getClients()[args[2]]) {
+			client->reply(ERR_NOSUCHNICK(args[2]));
+			return ;
+		}
+
+		if (args[1] == "-o") {
+			if (channel->searchOperator(args[2]))
+				channel->rmOperator(args[2]);
+		} else if (args[1] == "+o") {
+			if (!channel->searchOperator(args[2]))
+				channel->addOperator(args[2]);
+		}
+	} else if (args[1] == "-l" || args[1] == "+l") {
+		if (args[1] == "-l") {
+			channel->setClientLimited(false);
+		} else if (args[1] == "+l") {
+			channel->setClientLimited(true);
+			if (args.size() == 3) {
+				for (size_t i = 0; i != args[2].length(); ++i) {
+					if (!isdigit(args[2][i]))
+						return ;
+				}
+				int limit = atoi(args[2].c_str());
+				channel->setLimit(limit);
+			}
+		}
+	} else {
+		client->reply(ERR_UNKNOWNCOMMAND(args[0] + " " + args[1]));
+		return ;
+	}
 };
 

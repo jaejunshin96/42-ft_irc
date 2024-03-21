@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 16:07:45 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/19 21:51:16 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/21 13:38:01 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,25 @@ void Join::execute(Client *client, vector<string> args) {
 	string password = args.size() > 2 ? args[2] : "";
 	Channel *chToJoin = _server->getChannels()[name];
 	if (chToJoin) {
-		if (_server->getChannels()[name]->getPassword() == password) {
-			client->join(_server, chToJoin, name, true);
-		} else if (_server->getChannels()[name]->getPassword() != password) {
-			client->reply(ERR_BADCHANNELKEY(chToJoin->getName()));
+		if ((!chToJoin->getInviteState() || client->isInvited()) &&\
+				(!chToJoin->getClientLimited() || chToJoin->getClientSize() < chToJoin->getLimit())) {
+			if (!chToJoin->getPwRequired() || chToJoin->getPassword() == password) {
+				client->join(_server, chToJoin, name, true);
+			} else {
+				client->reply(ERR_BADCHANNELKEY(chToJoin->getName()));
+			}
+			return ;
+		}
+		if (chToJoin->getInviteState())
+			client->reply(ERR_INVITEONLYCHAN(chToJoin->getName()));
+		else if (chToJoin->getClientLimited() &&\
+					 chToJoin->getClientSize() >= chToJoin->getLimit()) {
+			client->reply(ERR_CHANNELISFULL(chToJoin->getName()));
 		}
 		return ;
 	}
 
 	Channel *newChannel = new Channel(name, password);
-	client->join(_server, newChannel, name, false);
 	newChannel->addOperator(client->getNickname());
+	client->join(_server, newChannel, name, false);
 };

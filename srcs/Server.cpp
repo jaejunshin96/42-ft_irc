@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:59:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/18 21:05:44 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/21 13:28:09 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void Server::disconnectClient(int fd) {
 	for (pfd_iterator it = _pfds.begin(); it != _pfds.end(); it++) {
 		if (it->fd == fd) {
 			if (!_clients.at(fd))
-				break;
+				return ;
 			Client *client = _clients.at(fd);
 			_clients.erase(fd);
 			_pfds.erase(it);
@@ -139,7 +139,7 @@ void Server::disconnectClient(int fd) {
 			cout << client->getHostname() << " " << fd <<\
 				 " has been disconnected." << endl;
 			delete client;
-			break;
+			return ;
 		}
 	}
 };

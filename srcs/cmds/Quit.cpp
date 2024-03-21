@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/15 11:40:29 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/16 19:22:34 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/21 13:13:43 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void Quit::execute(Client *client, vector<string> args) {
 	if (channel) {
 		string name = channel->getName();
 		client->leave(_server, channel, name);
-		delete channel;
+		//delete channel;
 	}
 	_server->disconnectClient(client->getSockfd());
 };

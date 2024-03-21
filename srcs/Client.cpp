@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/19 22:18:40 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/21 16:54:24 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,13 @@ void Client::join(Server *server, Channel *channel, string &name, bool isExistin
 	this->setChannel(channel);
 	channel->addClient(this);
 	this->setClientState(JOINED);
-	channel->broadcast(this, RPL_JOIN(this->getNickname(), name) + "\n", false);
+	channel->broadcast(this, RPL_JOIN(this->getNickname(), name), false);
 };
 
 void Client::leave(Server *server, Channel *channel, string &name) {
 	if (channel->getClients().size() == 1)
 		server->rmChannel(name);
-	channel->broadcast(this, RPL_PART(this->getNickname(), name) + "\n", false);
+	channel->broadcast(this, RPL_PART(this->getNickname(), name), false);
 	this->setChannel(NULL);
 	channel->rmClient(_nickname);
 	this->setClientState(REGISTERED);
