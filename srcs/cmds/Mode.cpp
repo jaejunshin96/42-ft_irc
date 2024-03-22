@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/19 21:10:32 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/21 16:29:58 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/22 21:07:36 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,17 @@ void Mode::execute(Client *client, vector<string> args) {
 	if (args[1] == "-i" || args[1] == "+i") {
 		args[1] == "-i" ? channel->setInviteStatus(false) :\
 							channel->setInviteStatus(true);
+		channel->broadcast(client, RPL_MODE(args[1]), false);
 		return ;
 	} else if (args[1] == "-t" || args[1] == "+t") {
 		args[1] == "-t" ? channel->setTopicRestrict(false) :\
 							channel->setTopicRestrict(true);
+		channel->broadcast(client, RPL_MODE(args[1]), false);
 		return ;
 	} else if (args[1] == "-k" || args[1] == "+k") {
 		args[1] == "-k" ? channel->setPwRequired(false) :\
 							channel->setPwRequired(true);
+		channel->broadcast(client, RPL_MODE(args[1]), false);
 		return ;
 	} else if (args[1] == "-o" || args[1] == "+o") {
 		if (args.size() < 3) {
@@ -60,10 +63,17 @@ void Mode::execute(Client *client, vector<string> args) {
 			if (!channel->searchOperator(args[2]))
 				channel->addOperator(args[2]);
 		}
+		channel->broadcast(client, RPL_MODE(args[1]) + " " + args[2], false);
+		return ;
 	} else if (args[1] == "-l" || args[1] == "+l") {
 		if (args[1] == "-l") {
 			channel->setClientLimited(false);
+			channel->broadcast(client, RPL_MODE(args[1]), false);
 		} else if (args[1] == "+l") {
+			if (args.size() < 3) {
+				client->reply(ERR_NEEDMOREPARAMS(client->getNickname(), "MODE"));
+				return ;
+			}
 			channel->setClientLimited(true);
 			if (args.size() == 3) {
 				for (size_t i = 0; i != args[2].length(); ++i) {
@@ -73,7 +83,9 @@ void Mode::execute(Client *client, vector<string> args) {
 				int limit = atoi(args[2].c_str());
 				channel->setLimit(limit);
 			}
+			channel->broadcast(client, RPL_MODE(args[1]) + " " + args[2], false);
 		}
+		return ;
 	} else {
 		client->reply(ERR_UNKNOWNCOMMAND(args[0] + " " + args[1]));
 		return ;

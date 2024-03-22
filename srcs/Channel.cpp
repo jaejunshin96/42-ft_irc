@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:03 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/22 16:13:42 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/22 20:52:19 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void Channel::rmOperator(const string &nick) {
 };
 
 void Channel::addInvite(const string &nick) {
-	_invites.push_back(nick);	
+	_invites.push_back(nick);
 };
 
 bool Channel::searchClient(const string &nick) {
@@ -122,9 +122,11 @@ void Channel::kickClient(Client *op, Client *target) {
 
 void Channel::broadcast(Client *client, string input, bool isMsg) {
 	string broadcastMessage = isMsg ? client->getNickname() + ": " + input :\
-										input + "\r\n";
+									client->getInfo() + ": " + input + "\r\n";
 	map<string, Client *>::iterator it;
 	for (it = _clients.begin(); it != _clients.end(); ++it) {
+		if (it->second == client)
+			continue;
 		int clientSockfd = it->second->getSockfd();
 		send(clientSockfd, broadcastMessage.c_str(), broadcastMessage.length(), 0);
 	}

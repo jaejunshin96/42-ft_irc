@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/22 15:38:59 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/22 20:26:31 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ void Client::leave(Server *server, Channel *channel, string &name) {
 	this->setClientState(REGISTERED);
 	// Give channel privilege to last remaining user
 	if (channel->getClients().size() == 1) {
-		map<string, Client *>::iterator last = channel->getClients().begin();
+		map<string, Client *> clients = channel->getClients();
+		map<string, Client *>::iterator last = clients.begin();
 		channel->addOperator(last->first);
 	}
 };

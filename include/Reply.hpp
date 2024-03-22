@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:46:05 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/22 15:24:32 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/22 21:10:20 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,3 +37,6 @@
 #define RPL_PART(nick, channel)				nick + " PART " + channel
 #define RPL_KICK(nick, channel, target)		nick + " KICK " + target + " from " + channel
 #define RPL_INVITE(nick, target, channel)	nick + " INVITE " + target + " to " + channel
+#define RPL_TOPIC(channel, topic)			channel + " :" + topic
+#define RPL_NOTOPIC(channel)				channel + " :No topic"
+#define RPL_MODE(flag)						"MODE " + flag

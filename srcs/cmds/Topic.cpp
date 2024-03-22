@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 16:00:37 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/22 16:15:23 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/22 20:32:23 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,23 +23,37 @@ void Topic::execute(Client *client, vector<string> args) {
 		return ;
 	}
 	Channel *channel = client->getChannel();
+	// check the topic
 	if (argSize == 2) {
 		if (channel->getName() != args[1]) {
 			client->reply(ERR_NOTONCHANNEL(channel->getName()));
 			return ;
 		}
-		// view topic.
+		if (channel->getTopic() == "") {
+			client->reply(RPL_NOTOPIC(channel->getName()));
+			return ;
+		} else {
+			client->reply(RPL_TOPIC(channel->getName(), channel->getTopic()));
+			return ;
+		}
 	}
-	
+	// set a new topic
 	if (argSize >= 3) {
 		if (channel->getName() != args[1]) {
 			client->reply(ERR_NOTONCHANNEL(channel->getName()));
 			return ;
-		} else if (!channel->searchOperator(client->getNickname())) {
+		} else if (channel->getTopicRestrict() &&\
+					!channel->searchOperator(client->getNickname())) {
 			client->reply(ERR_CHANOPRIVSNEEDED(channel->getName()));
 			return ;
 		}
-		
-		// set new topic.
+		string topic;;
+		size_t i = 2;
+		while (i <= argSize - 1) {
+			topic += args[i] + " ";
+			i++;
+		}
+		channel->setTopic(topic);
+		channel->broadcast(client, RPL_TOPIC(channel->getName(), topic), false);
 	}
 };
