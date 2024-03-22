@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:03 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/21 17:17:32 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/22 16:13:42 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 Channel::Channel() {};
 
 Channel::Channel(string &name, string &password): _name(name), _password(password),\
-				 _inviteOnly(false), _topicRestricted(false), _pwRequired(false),\
-				 _clientLimited(false), _limit(5) {};
+				 _topic(""), _inviteOnly(false), _topicRestricted(false),\
+				  _pwRequired(false), _clientLimited(false), _limit(5) {};
 
 Channel::~Channel() {};
 
@@ -28,6 +28,10 @@ string Channel::getPassword() const { return _password; };
 map<string, Client *> Channel::getClients() const { return _clients; };
 
 vector<string> Channel::getOperators() const { return _ops; };
+
+vector<string> Channel::getInvites() const { return _invites; };
+
+string Channel::getTopic() const { return _topic; };
 
 bool Channel::getInviteState() const { return _inviteOnly; };
 
@@ -43,6 +47,8 @@ int Channel::getClientSize() const { return _clients.size(); };
 
 /* setters */
 void Channel::setName(string &newName) { _name = newName; };
+
+void Channel::setTopic(string &newTopic) { _topic = newTopic; };
 
 void Channel::setInviteStatus(bool toggle) { _inviteOnly = toggle; };
 
@@ -78,6 +84,10 @@ void Channel::rmOperator(const string &nick) {
 	return ;
 };
 
+void Channel::addInvite(const string &nick) {
+	_invites.push_back(nick);	
+};
+
 bool Channel::searchClient(const string &nick) {
 	return _clients.count(nick) > 0;
 };
@@ -85,6 +95,15 @@ bool Channel::searchClient(const string &nick) {
 bool Channel::searchOperator(const string &nick) {
 	vector<string>::iterator it;
 	for (it = _ops.begin(); it != _ops.end(); it++) {
+		if (*it == nick)
+			return true;
+	}
+	return false;
+};
+
+bool Channel::searchInvite(const string &nick) {
+	vector<string>::iterator it;
+	for (it = _invites.begin(); it != _invites.end(); it++) {
 		if (*it == nick)
 			return true;
 	}

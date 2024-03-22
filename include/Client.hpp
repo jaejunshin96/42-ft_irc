@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:09:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/19 22:18:24 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/22 15:11:54 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ class Client {
 		ClientState _clientState;
 		Channel *_channel;
 
-		bool _isInvited;
-
 		Client();
 
 	public:
@@ -64,7 +62,6 @@ class Client {
 		string getInfo() const;
 		ClientState getClientState() const;
 		Channel *getChannel() const;
-		bool isInvited() const;
 
 		void setNickname(string newNick);
 		void setUsername(string newUser);
@@ -72,7 +69,6 @@ class Client {
 		void setRealname(string newReal);
 		void setClientState(ClientState state);
 		void setChannel(Channel *channel);
-		void setInvited(void);
 
 		bool isRegistered() const;
 

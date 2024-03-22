@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 17:39:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/21 13:56:44 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/22 16:06:00 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ Parser::Parser(Server *server): _server(server) {
 
 	_cmds["MODE"] = new Mode(_server, true);
 	_cmds["KICK"] = new Kick(_server, true);
+	_cmds["INVITE"] = new Invite(_server, true);
+	_cmds["TOPIC"] = new Topic(_server, true);
 };
 
 Parser::~Parser() {};

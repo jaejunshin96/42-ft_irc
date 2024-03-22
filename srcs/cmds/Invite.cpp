@@ -1,38 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Kick.cpp                                           :+:      :+:    :+:   */
+/*   Invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/21 13:44:07 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/22 13:27:49 by jaeshin          ###   ########.fr       */
+/*   Created: 2024/03/22 12:55:52 by jaeshin           #+#    #+#             */
+/*   Updated: 2024/03/22 15:24:47 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/Command.hpp"
 
-Kick::Kick(Server *server, bool auth): Command(server, auth) {};
+Invite::Invite(Server *server, bool auth): Command(server, auth) {};
 
-Kick::~Kick() {};
+Invite::~Invite() {};
 
-void Kick::execute(Client *client, vector<string> args) {
+void Invite::execute(Client *client, vector<string> args) {
 	Channel *channel = client->getChannel();
 	if (args.size() < 3) {
-		client->reply(ERR_NEEDMOREPARAMS(client->getNickname(), "KICK"));
+		client->reply(ERR_NEEDMOREPARAMS(client->getNickname(), "INVITE"));
 		return ;
 	} else if (!channel->searchOperator(client->getNickname())) {
 		client->reply(ERR_CHANOPRIVSNEEDED(channel->getName()));
 		return ;
-	} else if (channel->getName() != args[1]) {
-		client->reply(ERR_NOTONCHANNEL(channel->getName()));
+	} else if (!_server->searchClient(args[1])) {
+		client->reply(ERR_NOSUCHNICK(args[1]));
 		return ;
-	} else if (!channel->searchClient(args[2])) {
-		client->reply(ERR_NOSUCHNICK(args[2]));
+	} else if (channel->searchClient(args[1])) {
+		client->reply(ERR_USERONCHANNEL(channel->getName(), args[1]));
 		return ;
 	}
-
-	Client *targetClient = channel->getClients().at(args[2]);
-
-	channel->kickClient(client, targetClient);
+	Client *target = _server->searchClient(args[1]);
+	channel->addInvite(args[1]);
+	target->reply(RPL_INVITE(client->getNickname(), args[1], args[2]));
+	return ;
 };
