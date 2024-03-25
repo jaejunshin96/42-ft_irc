@@ -6,11 +6,11 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:21:41 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/15 11:24:25 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/25 16:31:54 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/Command.hpp"
+#include "../../includes/Command.hpp"
 
 User::User(Server *server, bool auth): Command(server, auth) {};
 

@@ -6,11 +6,11 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/17 22:50:11 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/18 21:09:47 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/25 16:31:48 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/Command.hpp"
+#include "../../includes/Command.hpp"
 
 Privmsg::Privmsg(Server *server, bool auth): Command(server, auth) {};
 

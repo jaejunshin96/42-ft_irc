@@ -6,11 +6,11 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 15:19:03 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/15 11:24:14 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/25 16:31:25 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/Command.hpp"
+#include "../../includes/Command.hpp"
 
 Nick::Nick(Server *server, bool auth): Command(server, auth) {};
 

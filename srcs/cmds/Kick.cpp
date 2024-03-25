@@ -6,11 +6,11 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 13:44:07 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/22 13:27:49 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/25 16:31:21 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/Command.hpp"
+#include "../../includes/Command.hpp"
 
 Kick::Kick(Server *server, bool auth): Command(server, auth) {};
 

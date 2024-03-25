@@ -6,11 +6,11 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:03 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/22 20:52:19 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/25 16:50:12 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/Channel.hpp"
+#include "../includes/Channel.hpp"
 
 Channel::Channel() {};
 
@@ -122,10 +122,10 @@ void Channel::kickClient(Client *op, Client *target) {
 
 void Channel::broadcast(Client *client, string input, bool isMsg) {
 	string broadcastMessage = isMsg ? client->getNickname() + ": " + input :\
-									client->getInfo() + ": " + input + "\r\n";
+									":" + client->getInfo() + ": " + input + "\r\n";
 	map<string, Client *>::iterator it;
 	for (it = _clients.begin(); it != _clients.end(); ++it) {
-		if (it->second == client)
+		if (isMsg && it->second == client)
 			continue;
 		int clientSockfd = it->second->getSockfd();
 		send(clientSockfd, broadcastMessage.c_str(), broadcastMessage.length(), 0);

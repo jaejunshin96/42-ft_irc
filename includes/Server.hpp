@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 17:54:57 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/18 16:11:11 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/24 23:39:02 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ class Server {
 		int _port;
 		string _password;
 
-		int _listening;
+		static int _listening;
 		int _serverFd;
 
 		vector<pollfd> _pfds;
@@ -80,6 +80,8 @@ class Server {
 
 		string readInput(int fd);
 		void handleInput(int fd);
+
+		static void signalHandler(int signum);
 };
 
 #endif

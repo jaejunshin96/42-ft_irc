@@ -6,11 +6,11 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 16:00:37 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/22 20:32:23 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/25 16:31:52 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/Command.hpp"
+#include "../../includes/Command.hpp"
 
 Topic::Topic(Server *server, bool auth): Command(server, auth) {};
 

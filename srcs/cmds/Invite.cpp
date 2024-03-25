@@ -6,11 +6,11 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 12:55:52 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/22 15:24:47 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/25 16:31:16 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/Command.hpp"
+#include "../../includes/Command.hpp"
 
 Invite::Invite(Server *server, bool auth): Command(server, auth) {};
 

@@ -6,11 +6,13 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:59:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/22 13:17:42 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/25 22:25:14 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/Server.hpp"
+#include "../includes/Server.hpp"
+
+int Server::_listening = 42;
 
 Server::Server(const string &port, const string &password): _password(password) {
 	_port = stoi(port);
@@ -20,12 +22,24 @@ Server::Server(const string &port, const string &password): _password(password) 
 		cerr << "Error: creating a server." << endl;
 		exit(1);
 	}
-	_listening = 42;
+	//Server::_listening = 42;
 	_parser = new Parser(this);
 	start();
 };
 
-Server::~Server() {};
+Server::~Server() {
+	delete _parser;
+
+	map<string, Channel *>::iterator it;
+	for (it = _channels.begin(); it != _channels.begin(); it++) {
+		delete it->second;
+	}
+
+	map<int, Client *>::iterator it2;
+	for (it2 = _clients.begin(); it2 != _clients.begin(); it2++) {
+		delete it2->second;
+	}
+};
 
 int Server::getPort() const { return _port; };
 
@@ -71,7 +85,7 @@ int Server::createServer(int port) {
 	struct sockaddr_in serverAddr;
 	serverAddr.sin_family = AF_INET;
 	serverAddr.sin_port = htons(port);
-	serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	serverAddr.sin_addr.s_addr = INADDR_ANY;
 
 	// Bind the socket
 	if (bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0) {
@@ -100,9 +114,12 @@ void Server::start(void) {
 
 	cout << "Server is listening..." << endl;
 
-	while(_listening) {
-		if (poll(_pfds.begin().base(), _pfds.size(), -1) < 0)
+	while(Server::_listening) {
+		if (poll(_pfds.begin().base(), _pfds.size(), -1) < 0 && Server::_listening != 0) {
 			throw runtime_error("Error: while polling from fd.");
+		} else if (Server::_listening == 0) {
+			break;
+		}
 
 		for (pfd_iterator it = _pfds.begin(); it != _pfds.end(); it++) {
 			if (it->revents == 0)
@@ -125,6 +142,11 @@ void Server::start(void) {
 			}
 		}
 	}
+	for (pfd_iterator it = _pfds.begin(); it != _pfds.end(); it++) {
+		close(it->fd);
+	}
+	close(_serverFd);
+	return ;
 };
 
 void Server::disconnectClient(int fd) {
@@ -201,4 +223,9 @@ void Server::handleInput(int fd) {
 	} catch (const exception &e) {
 		cerr << e.what() << endl;
 	}
+};
+
+void Server::signalHandler(int signum) {
+	cout << endl << "Signal Received " << endl;
+	Server::_listening = 0;
 };
