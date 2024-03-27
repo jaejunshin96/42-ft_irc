@@ -6,13 +6,14 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 17:39:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/25 22:27:00 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/27 15:06:56 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Parser.hpp"
 
 Parser::Parser(Server *server): _server(server) {
+	// server cmds
 	_cmds["PASS"] = new Pass(_server, false);
 	_cmds["NICK"] = new Nick(_server, false);
 	_cmds["USER"] = new User(_server, false);
@@ -20,22 +21,11 @@ Parser::Parser(Server *server): _server(server) {
 	_cmds["JOIN"] = new Join(_server, true);
 	_cmds["PART"] = new Part(_server, true);
 	_cmds["PRIVMSG"] = new Privmsg(_server, true);
+	// channel cmds
 	_cmds["MODE"] = new Mode(_server, true);
 	_cmds["KICK"] = new Kick(_server, true);
 	_cmds["INVITE"] = new Invite(_server, true);
 	_cmds["TOPIC"] = new Topic(_server, true);
-
-	_cmds["pass"] = new Pass(_server, false);
-	_cmds["nick"] = new Nick(_server, false);
-	_cmds["user"] = new User(_server, false);
-	_cmds["quit"] = new Quit(_server, false);
-	_cmds["join"] = new Join(_server, true);
-	_cmds["part"] = new Part(_server, true);
-	_cmds["privmsg"] = new Privmsg(_server, true);
-	_cmds["mode"] = new Mode(_server, true);
-	_cmds["kick"] = new Kick(_server, true);
-	_cmds["invite"] = new Invite(_server, true);
-	_cmds["topic"] = new Topic(_server, true);
 };
 
 Parser::~Parser() {
@@ -45,6 +35,12 @@ Parser::~Parser() {
 	}
 };
 
+string toUpper(const string& str) {
+    string result = str;
+    transform(result.begin(), result.end(), result.begin(), ::toupper);
+    return result;
+}
+
 void Parser::parse(Client *client, string &input) {
 	string trimmedStr;
 	size_t start = input.find_first_not_of(" \t\n\r");
@@ -52,7 +48,6 @@ void Parser::parse(Client *client, string &input) {
 	if (start == string::npos)
 		return ;
 	trimmedStr = input.substr(start, end + 1);
-	cout << trimmedStr << endl;
 
 	vector<string> tokens;
 	stringstream ss(trimmedStr);
@@ -61,18 +56,20 @@ void Parser::parse(Client *client, string &input) {
 		tokens.push_back(token);
 	}
 
-	if (_cmds[tokens[0]]) {
-		if (!client->isRegistered() && _cmds[tokens[0]]->authRequired()) {
+	string cmd = toUpper(tokens[0]);
+
+	if (_cmds[cmd]) {
+		if (!client->isRegistered() && _cmds[cmd]->authRequired()) {
 			client->reply(ERR_NOTREGISTERED(client->getNickname()));
 			return ;
 		}
-		_cmds[tokens[0]]->execute(client, tokens);
+		_cmds[cmd]->execute(client, tokens);
 	} else {
 		if (client->getClientState() == JOINED) {
 			client->getChannel()->broadcast(client, input, true);
 			return ;
 		} else {
-			client->reply(ERR_UNKNOWNCOMMAND(tokens[0]));
+			client->reply(ERR_UNKNOWNCOMMAND(cmd));
 			return ;
 		}
 	}

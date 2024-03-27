@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:03 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/25 16:50:12 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/27 16:02:45 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void Channel::broadcast(Client *client, string input, bool isMsg) {
 	string broadcastMessage = isMsg ? client->getNickname() + ": " + input :\
 									":" + client->getInfo() + ": " + input + "\r\n";
 	map<string, Client *>::iterator it;
-	for (it = _clients.begin(); it != _clients.end(); ++it) {
+	for (it = _clients.begin(); it != _clients.end(); it++) {
 		if (isMsg && it->second == client)
 			continue;
 		int clientSockfd = it->second->getSockfd();

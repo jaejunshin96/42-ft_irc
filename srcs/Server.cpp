@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:59:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/25 22:25:14 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/27 20:40:39 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ Server::~Server() {
 	delete _parser;
 
 	map<string, Channel *>::iterator it;
-	for (it = _channels.begin(); it != _channels.begin(); it++) {
+	for (it = _channels.begin(); it != _channels.end(); it++) {
 		delete it->second;
 	}
 
 	map<int, Client *>::iterator it2;
-	for (it2 = _clients.begin(); it2 != _clients.begin(); it2++) {
+	for (it2 = _clients.begin(); it2 != _clients.end(); it2++) {
 		delete it2->second;
 	}
 };
@@ -68,6 +68,7 @@ void Server::addChannel(Channel *newChannel) {
 };
 
 void Server::rmChannel(string &chName) {
+	delete _channels[chName];
 	_channels.erase(chName);
 };
 
@@ -127,7 +128,10 @@ void Server::start(void) {
 
 			if ((it->revents & POLLHUP) == POLLHUP) {
 				// disconnected
-				disconnectClient(it->fd);
+				if (getClients().count(it->fd)) {
+					if (getClients().at(it->fd)->getClientState() != DISCONNECTED)
+						disconnectClient(it->fd);
+				}
 				break;
 			}
 
@@ -150,24 +154,32 @@ void Server::start(void) {
 };
 
 void Server::disconnectClient(int fd) {
-	for (pfd_iterator it = _pfds.begin(); it != _pfds.end(); it++) {
-		if (it->fd == fd) {
-			if (!_clients.at(fd))
-				return ;
+	try {
+		pfd_iterator itB = _pfds.begin();
+		pfd_iterator itE = _pfds.end();
+
+		while (itB != itE) {
+			if (itB->fd == fd) {
+				_pfds.erase(itB);
+				close(fd);
+				break;
+			}
+			itB++;
+		}
+		if (_clients.count(fd)) {
 			Client *client = _clients.at(fd);
 			_clients.erase(fd);
-			_pfds.erase(it);
-			close(fd);
-			cout << client->getHostname() << " " << fd <<\
-				 " has been disconnected." << endl;
+			cout << client->getHostname() << " " << fd << " has been disconnected." << endl;
 			delete client;
-			return ;
 		}
+	} catch (const exception &e) {
+		cout << "Error: disconnecting a client" << e.what() << endl;
 	}
 };
 
 void Server::connectClient(void) {
 	sockaddr_in clientAddr;
+	memset(&clientAddr, 0, sizeof(clientAddr));
 	socklen_t clientAddrLen = sizeof(clientAddr);
 
 	// Connect the sockets between client and server
@@ -198,28 +210,29 @@ void Server::connectClient(void) {
 
 string Server::readInput(int fd) {
 	string message;
-
+	size_t len;
 	char buffer[1024];
-	bzero(buffer, 1024);
 
-	while (!strstr(buffer, "\n")) {
-		bzero(buffer, 1024);
+	memset(buffer, 0, 1024);
+	len = recv(fd, buffer, 1023, 0);
 
-		if (((recv(fd, buffer, 1024, 0) < 0) && (errno != EWOULDBLOCK)))
-			throw runtime_error("Error: reading buffer from a client.");
+	if ((len < 0) && (errno != EWOULDBLOCK))
+		throw runtime_error("Error: reading buffer from a client.");
 
-		message.append(buffer);
-	}
+	buffer[len] = '\0';
+	message.append(buffer);
 
 	return message;
 };
 
 void Server::handleInput(int fd) {
 	try {
-		Client *client = _clients.at(fd);
-		string message = readInput(fd);
+		if (_clients.count(fd)) {
+			Client *client = _clients.at(fd);
+			string message = readInput(fd);
 
-		_parser->parse(client, message);
+			_parser->parse(client, message);
+		}
 	} catch (const exception &e) {
 		cerr << e.what() << endl;
 	}

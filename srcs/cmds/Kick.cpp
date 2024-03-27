@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 13:44:07 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/25 16:31:21 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/27 16:08:59 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void Kick::execute(Client *client, vector<string> args) {
 		return ;
 	}
 
-	Client *targetClient = channel->getClients().at(args[2]);
-
-	channel->kickClient(client, targetClient);
+	if (channel->getClients().count(args[2]) > 0) {
+		Client *targetClient = channel->getClients().at(args[2]);
+		channel->kickClient(client, targetClient);
+	}
 };

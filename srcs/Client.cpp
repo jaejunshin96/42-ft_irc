@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/25 16:32:01 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/27 16:09:54 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,18 @@ void Client::join(Server *server, Channel *channel, string &name, bool isExistin
 };
 
 void Client::leave(Server *server, Channel *channel, string &name) {
-	if (channel->getClients().size() == 1)
-		server->rmChannel(name);
 	channel->broadcast(this, RPL_PART(this->getNickname(), name), false);
+	if (channel->getClients().size() == 1) {
+		this->setChannel(NULL);
+		this->setClientState(REGISTERED);
+		server->rmChannel(name);
+		return ;
+	}
+
 	this->setChannel(NULL);
 	channel->rmClient(_nickname);
 	this->setClientState(REGISTERED);
+
 	// Give channel privilege to last remaining user
 	if (channel->getClients().size() == 1) {
 		map<string, Client *> clients = channel->getClients();
