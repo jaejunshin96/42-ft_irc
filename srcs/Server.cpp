@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:59:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/27 20:40:39 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/29 15:40:03 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@ int Server::_listening = 42;
 
 Server::Server(const string &port, const string &password): _password(password) {
 	_port = stoi(port);
-	_serverFd = createServer(_port);
+	if (!(0 <= _port && _port <= 65535))
+		throw runtime_error("Error: Invalid port number.");
 
-	if (!_serverFd) {
-		cerr << "Error: creating a server." << endl;
-		exit(1);
-	}
-	//Server::_listening = 42;
+	_serverFd = createServer(_port);
+	if (!_serverFd)
+		throw runtime_error("Error: creating a server.");
+
 	_parser = new Parser(this);
+
 	start();
 };
 
@@ -68,19 +69,16 @@ void Server::addChannel(Channel *newChannel) {
 };
 
 void Server::rmChannel(string &chName) {
-	delete _channels[chName];
 	_channels.erase(chName);
 };
 
 int Server::createServer(int port) {
 	// Create a socket, on failure returns -1.
 	int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
-	if (serverSocket < 0) {
-		cerr << "Error: creating a socket." << endl;
-		return 0;
-	} else {
+	if (serverSocket < 0)
+		throw runtime_error("Error: creating a socket.");
+	else
 		cout << "socket() is OK." << endl;
-	}
 
 	// Connect through local network
 	struct sockaddr_in serverAddr;
@@ -90,18 +88,16 @@ int Server::createServer(int port) {
 
 	// Bind the socket
 	if (bind(serverSocket, (struct sockaddr *)&serverAddr, sizeof(serverAddr)) < 0) {
-		cerr << "Error: binding socket." << endl;
 		close(serverSocket);
-		return 0;
+		throw runtime_error("Error: binding socket.");
 	} else {
 		cout << "bind() is OK." << endl;
 	}
 
 	// Listen for connections
 	if (listen(serverSocket, 5) == -1) {
-		cerr << "Error: listening on socket." << endl;
 		close(serverSocket);
-		return 0;
+		throw runtime_error("Error: listening on socket.");
 	} else {
 		cout << "listen() is OK, Now I am waiting for connections." << endl;
 	}
@@ -239,6 +235,6 @@ void Server::handleInput(int fd) {
 };
 
 void Server::signalHandler(int signum) {
-	cout << endl << "Signal Received " << endl;
+	cout << endl << "Signal Received." << endl;
 	Server::_listening = 0;
 };

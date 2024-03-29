@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/11 16:07:45 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/25 16:31:19 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/29 15:59:00 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,11 @@ void Join::execute(Client *client, vector<string> args) {
 			}
 			return ;
 		}
-		if (chToJoin->getInviteState())
-			client->reply(ERR_INVITEONLYCHAN(chToJoin->getName()));
-		else if (chToJoin->getClientLimited() &&\
-					 chToJoin->getClientSize() >= chToJoin->getLimit()) {
+		if (chToJoin->getClientLimited() &&\
+					 chToJoin->getClientSize() >= chToJoin->getLimit())
 			client->reply(ERR_CHANNELISFULL(chToJoin->getName()));
-		}
+		else if (chToJoin->getInviteState())
+			client->reply(ERR_INVITEONLYCHAN(chToJoin->getName()));
 		return ;
 	}
 

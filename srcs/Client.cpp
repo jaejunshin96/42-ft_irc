@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/27 16:09:54 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/29 15:41:19 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,11 @@ void Client::leave(Server *server, Channel *channel, string &name) {
 	if (channel->getClients().size() == 1) {
 		map<string, Client *> clients = channel->getClients();
 		map<string, Client *>::iterator last = clients.begin();
-		channel->addOperator(last->first);
+		if (!channel->searchOperator(last->first)) {
+			channel->addOperator(last->first);
+			cout << "Channel " + channel->getName() +\
+				" privilege passing to " << last->first << endl;
+		}
 	}
 };
 
