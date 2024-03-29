@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:59:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/29 15:40:03 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/03/29 16:36:38 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,14 +209,15 @@ string Server::readInput(int fd) {
 	size_t len;
 	char buffer[1024];
 
-	memset(buffer, 0, 1024);
-	len = recv(fd, buffer, 1023, 0);
+	while (!strstr(buffer, "\n")) {
+		memset(buffer, 0, 1024);
+		len += recv(fd, buffer, 1023, 0);
 
-	if ((len < 0) && (errno != EWOULDBLOCK))
-		throw runtime_error("Error: reading buffer from a client.");
+		if ((len < 0) && (errno != EWOULDBLOCK))
+			throw runtime_error("Error: reading buffer from a client.");
 
-	buffer[len] = '\0';
-	message.append(buffer);
+		message.append(buffer);
+	}
 
 	return message;
 };
