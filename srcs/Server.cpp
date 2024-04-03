@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:59:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/29 16:36:38 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/04/03 14:05:54 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,7 +206,7 @@ void Server::connectClient(void) {
 
 string Server::readInput(int fd) {
 	string message;
-	size_t len;
+	size_t len = 0;
 	char buffer[1024];
 
 	while (!strstr(buffer, "\n")) {
@@ -236,6 +236,7 @@ void Server::handleInput(int fd) {
 };
 
 void Server::signalHandler(int signum) {
+	(void)signum;
 	cout << endl << "Signal Received." << endl;
 	Server::_listening = 0;
 };

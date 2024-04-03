@@ -11,7 +11,7 @@ OBJS	=	$(SRCS:.cpp=.o)
 INCLUDES	= -I ./incldues
 
 .cpp.o:
-	$(CC) $(CFLAGE) $(INCLUDES) -c $< -o $(<:.cpp=.o)
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $(<:.cpp=.o)
 
 all: $(NAME)
 

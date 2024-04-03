@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 16:00:37 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/25 16:31:52 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/04/03 16:34:24 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void Topic::execute(Client *client, vector<string> args) {
 			client->reply(ERR_CHANOPRIVSNEEDED(channel->getName()));
 			return ;
 		}
-		string topic;;
+		string topic = " TOPIC: ";
 		size_t i = 2;
 		while (i <= argSize - 1) {
 			topic += args[i] + " ";
