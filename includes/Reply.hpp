@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:46:05 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/25 19:26:29 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/04/07 16:29:39 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 #define ERR_CHANOPRIVSNEEDED(channel)		"482 " + channel + " :You're not channel operator"
 
 /* reply */
-#define RPL_WELCOMEMSG(names)				names + " :Welcome to the ft_irc Network"
+#define RPL_WELCOMEMSG						":Welcome to the ft_irc Network"
 #define RPL_JOIN(nick, channel)				nick + " JOIN " + channel
 #define RPL_PART(nick, channel)				nick + " PART " + channel
 #define RPL_KICK(nick, channel, target)		nick + " KICK " + target + " from " + channel

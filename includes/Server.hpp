@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 17:54:57 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/24 23:39:02 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/04/07 20:45:56 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ class Server {
 		void rmChannel(string &chName);
 
 		int createServer(int port);
-		void start(void);
+		void startServer(void);
 
 		void disconnectClient(int fd);
 		void connectClient(void);

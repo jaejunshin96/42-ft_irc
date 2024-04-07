@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/29 15:41:19 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/04/07 20:46:17 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ bool Client::isRegistered() const {
 	return false;
 };
 
-void Client::write(const string &message) {
+void Client::writeMsg(const string &message) {
 	string buffer = message + "\r\n";
 	if (send(_sockfd, buffer.c_str(), buffer.length(), 0) < 0) {
 		throw runtime_error("Error: sending a message from a client.");
@@ -75,7 +75,7 @@ void Client::write(const string &message) {
 };
 
 void Client::reply(const string &message) {
-	this->write(":" + getInfo() + " " + message);
+	this->writeMsg(":" + getInfo() + " " + message);
 };
 
 void Client::join(Server *server, Channel *channel, string &name, bool isExisting) {

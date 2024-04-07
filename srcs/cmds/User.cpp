@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/06 16:21:41 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/28 20:46:21 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/04/06 20:43:39 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void User::execute(Client *client, vector<string> args) {
 	}
 	client->setRealname(realname);
 	client->setClientState(REGISTERED);
-	client->reply(RPL_WELCOMEMSG(client->getInfo()));
+	client->reply(RPL_WELCOMEMSG);
 
 	cout << args[1] << " has been registred." << endl;
 };

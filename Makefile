@@ -16,7 +16,7 @@ INCLUDES	= -I ./incldues
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@$(CC) $(FLAGS) $(INCLUDES) $(OBJS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(NAME)
 	@echo "ircserv has been created."
 
 clean:

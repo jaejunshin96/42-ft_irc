@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:59:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/04/03 14:05:54 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/04/07 20:45:49 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int Server::_listening = 42;
 
 Server::Server(const string &port, const string &password): _password(password) {
-	_port = stoi(port);
+	_port = atoi(port.c_str());
 	if (!(0 <= _port && _port <= 65535))
 		throw runtime_error("Error: Invalid port number.");
 
@@ -25,7 +25,7 @@ Server::Server(const string &port, const string &password): _password(password) 
 
 	_parser = new Parser(this);
 
-	start();
+	startServer();
 };
 
 Server::~Server() {
@@ -105,7 +105,7 @@ int Server::createServer(int port) {
 	return serverSocket;
 };
 
-void Server::start(void) {
+void Server::startServer(void) {
 	pollfd server = {_serverFd, POLLIN, 0};
 	_pfds.push_back(server);
 
@@ -208,6 +208,7 @@ string Server::readInput(int fd) {
 	string message;
 	size_t len = 0;
 	char buffer[1024];
+	memset(buffer, 0, 1024);
 
 	while (!strstr(buffer, "\n")) {
 		memset(buffer, 0, 1024);
