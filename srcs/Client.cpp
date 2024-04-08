@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 19:38:00 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/04/07 20:46:17 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/04/08 14:17:46 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,15 +101,24 @@ void Client::leave(Server *server, Channel *channel, string &name) {
 	this->setClientState(REGISTERED);
 
 	// Give channel privilege to last remaining user
-	if (channel->getClients().size() == 1) {
+	if (channel->getClients().size() >= 1) {
 		map<string, Client *> clients = channel->getClients();
-		map<string, Client *>::iterator last = clients.begin();
-		if (!channel->searchOperator(last->first)) {
-			channel->addOperator(last->first);
+		map<string, Client *>::iterator begin = clients.begin();
+		if (!channel->searchOperator(begin->first)) {
+			channel->addOperator(begin->first);
 			cout << "Channel " + channel->getName() +\
-				" privilege passing to " << last->first << endl;
+				" privilege passing to " << begin->first << endl;
 		}
 	}
+	// if (channel->getClients().size() == 1) {
+	// 	map<string, Client *> clients = channel->getClients();
+	// 	map<string, Client *>::iterator last = clients.begin();
+	// 	if (!channel->searchOperator(last->first)) {
+	// 		channel->addOperator(last->first);
+	// 		cout << "Channel " + channel->getName() +\
+	// 			" privilege passing to " << last->first << endl;
+	// 	}
+	// }
 };
 
 void Client::privmsg(Client *tClient, Channel *tChannel, vector<string> input) {
