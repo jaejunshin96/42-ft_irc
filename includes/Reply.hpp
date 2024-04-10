@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:46:05 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/04/07 16:29:39 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/04/10 19:51:24 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 #define ERR_UNKNOWNCOMMAND(cmd)				"421 " + cmd + " :Unknown command"
 #define ERR_NONICKNAMEGIVEN					"431 :No nickname given"
 #define ERR_NICKNAMEINUSE(nick)				"433 " + nick + " :Nickname is already in use"
-#define ERR_NOTONCHANNEL(channel)			"442 " + channel + " :You are not on a channel"
+#define ERR_NOTONCHANNEL(nick)				"442 " + nick + " :You are not on a channel"
 #define ERR_USERONCHANNEL(channel, client)	"443 " + channel + " :" + client + " Already on the channel"
 #define ERR_NOTREGISTERED(nick)				"451 " + nick + " :You have not registered"
 #define ERR_NEEDMOREPARAMS(nick, cmd)		"461 " + nick + " " + cmd + " :Not enough parameters"

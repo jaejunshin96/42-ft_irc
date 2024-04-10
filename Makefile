@@ -8,7 +8,7 @@ SRCS	=	$(wildcard srcs/*.cpp \
 			main.cpp)
 OBJS	=	$(SRCS:.cpp=.o)
 
-INCLUDES	= -I ./incldues
+INCLUDES	= -I ./includes
 
 .cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $(<:.cpp=.o)
@@ -17,15 +17,15 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(NAME)
-	@echo "ircserv has been created."
+	@echo "$(NAME) has been created."
 
 clean:
 	@rm -f $(OBJS)
-	@echo "ircserv binaries have been deleted."
+	@echo "$(NAME) binaries have been deleted."
 
 fclean: clean
 	@rm -f $(NAME)
-	@echo "ircserv has been deleted."
+	@echo "$(NAME) has been deleted."
 
 re: fclean all
 

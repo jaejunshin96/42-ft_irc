@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 17:39:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/03/27 15:06:56 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/04/10 19:44:06 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,10 @@ void Parser::parse(Client *client, string &input) {
 		if (!client->isRegistered() && _cmds[cmd]->authRequired()) {
 			client->reply(ERR_NOTREGISTERED(client->getNickname()));
 			return ;
+		}
+		if (client->isRegistered() && !client->getChannel()) {
+			client->reply(ERR_NOTONCHANNEL(client->getNickname()));
+			return;
 		}
 		_cmds[cmd]->execute(client, tokens);
 	} else {
