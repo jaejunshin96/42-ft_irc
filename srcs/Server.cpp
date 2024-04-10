@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:59:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/04/07 20:45:49 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/04/08 14:30:18 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,8 @@ string Server::readInput(int fd) {
 
 		message.append(buffer);
 	}
+	
+	// buffer[len] = "\0";
 
 	return message;
 };
