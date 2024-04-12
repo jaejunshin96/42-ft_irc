@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/26 18:59:44 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/04/10 20:05:04 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/04/11 21:16:36 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int Server::createServer(int port) {
 	}
 
 	// Listen for connections
-	if (listen(serverSocket, 5) == -1) {
+	if (listen(serverSocket, SOMAXCONN) == -1) {
 		close(serverSocket);
 		throw runtime_error("Error: listening on socket.");
 	} else {
