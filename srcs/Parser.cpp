@@ -6,7 +6,7 @@
 /*   By: jaeshin <jaeshin@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/02 17:39:24 by jaeshin           #+#    #+#             */
-/*   Updated: 2024/04/10 19:44:06 by jaeshin          ###   ########.fr       */
+/*   Updated: 2024/04/15 12:54:41 by jaeshin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ void Parser::parse(Client *client, string &input) {
 			client->reply(ERR_NOTREGISTERED(client->getNickname()));
 			return ;
 		}
-		if (client->isRegistered() && !client->getChannel()) {
+		if (client->isRegistered() && !client->getChannel() &&\
+			 (cmd == "MODE" || cmd == "KICK" || cmd == "TOPIC" || cmd == "PART" || cmd == "INVITE")) {
 			client->reply(ERR_NOTONCHANNEL(client->getNickname()));
 			return;
 		}
